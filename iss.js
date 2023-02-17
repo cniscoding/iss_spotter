@@ -24,4 +24,24 @@ const fetchMyIP = function(callback) {
     callback(null, data.ip);
   });
 };
-module.exports = { fetchMyIP };
+
+const fetchCoordsByIp = function(ip, callback) {
+  request(`http://ipwho.is/${ip}`, (error, response, body) => {
+  // request('https://ipwho.is/42', (error, response, body) => {
+    const data = JSON.parse(body);
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    if (!data.success){
+      const message = `Success status was ${data.success}. Server message says ${data.message} when fetching for IP ${data.ip}`;
+      callback(Error(message), null);
+      return;
+    }
+    
+    let cords = `${data.latitude}, ${data.longitude}` 
+    callback(null, cords);
+  })
+}
+module.exports = { fetchMyIP,fetchCoordsByIp };
