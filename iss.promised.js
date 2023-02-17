@@ -1,5 +1,12 @@
 const request = require('request-promise-native');
 
-const fetchMyIp = () => {
-  return request(`https://iss-flyover.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`);
+const fetchMyIP = () => {
+  return request(`https://api.ipify.org/?format=json`);
 }
+
+const fetchCoordsByIP = (body) => {
+  const IP = JSON.parse(body).ip;
+  return request(`http://ipwho.is/${ip}`)
+};
+
+module.exports = {fetchMyIP,fetchCoordsByIP};
